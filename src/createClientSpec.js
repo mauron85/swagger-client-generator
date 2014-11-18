@@ -105,4 +105,13 @@ describe('create client', function(){
     expect(requestHandler.calls.mostRecent().args[1].url)
       .toBe('http://example.com/api/resource/all-of-it?token=operation-level-auth&queryParam=1');
   });
+
+  it('should use passed url option instead of schema url', function(){
+    var client = createClient(schema, requestHandler);
+    
+    client.url('http://other.com/api')
+    client.resource.doIt('1');
+    expect(requestHandler.calls.mostRecent().args[1].url)
+      .toBe('http://other.com/api/resource/all-of-it?queryParam=1');
+  });
 });

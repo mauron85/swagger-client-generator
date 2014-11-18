@@ -16,9 +16,9 @@ Object.keys(errorTypes).forEach(function(errorName){
   allErrorTypes[errorName] = errorTypes[errorName];
 });
 
-function createOperationHandler(operation, getAuthData, requestHandler){
+function createOperationHandler(operation, getAuthData, requestHandler, _options){
   function Request(data, options){
-    this.method = operation.method;
+    this.method = operation.method || operation.httpMethod;
     this.operation = operation;
     this.errorTypes = allErrorTypes;
     this.data = data;
@@ -51,9 +51,13 @@ function createOperationHandler(operation, getAuthData, requestHandler){
       // If we know there is an error, don't attempt to craft the request params.
       // The request param generators assume valid data to work properly.
       if(!error){
+        if (_options && _options.basePath) {
+          operation.apiObject.apiDeclaration.basePath = _options.basePath;
+        }
         request.url = getRequestUrl(operation, data);
         request.headers = getRequestHeaders(operation, data, options);
         request.body = getRequestBody(operation, data, request.headers);
+        request.auth = options.auth;
         
         applyAuthData(operation, getAuthData(), request);
       }

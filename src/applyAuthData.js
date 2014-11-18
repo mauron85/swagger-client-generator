@@ -1,6 +1,8 @@
 'use strict';
 
-var MissingAuthorizationError = require('./errorTypes').MissingAuthorizationError;
+var applyApiKey = require('./auth/apikey'),
+    applyBasicAuth = require('./auth/basic'),
+    MissingAuthorizationError = require('./errorTypes').MissingAuthorizationError;
 
 module.exports = function applyAuthData(operation, authData, request){
   var authMap = operation.authorizations;
@@ -49,34 +51,3 @@ module.exports = function applyAuthData(operation, authData, request){
     }
   }
 };
-
-function applyApiKey(auth, authName, apiKey, request){
-  if(!apiKey) throw new MissingAuthorizationError(authName, auth);
-  
-  if(auth.passAs === 'header'){
-    request.headers[auth.keyname] = apiKey;
-  } else if(auth.passAs === 'query'){
-    var url = request.url;
-    var queryParam = auth.keyname + '=' + encodeURIComponent(apiKey);
-    if(url.indexOf('?') === -1){
-      url += '?' + queryParam;
-    } else {
-      url = url.replace('?', '?' + queryParam + '&');
-    }
-
-    request.url = url;
-  }
-}
-
-function applyBasicAuth(auth, authName, username, password, request){
-  if(!username || !password) throw new MissingAuthorizationError(authName, auth);
-  
-  var url = request.url;
-  
-  // Only add basic auth once
-  if(url.indexOf('@') === -1){
-    url = url.replace('://', '://' + username + ':' + password + '@');
-  }
-
-  request.url = url;
-}

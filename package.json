@@ -1,6 +1,6 @@
 {
   "name": "swagger-client-generator",
-  "version": "0.2.10",
+  "version": "0.3.0-alfa.0+mauron85",
   "description": "",
   "keywords": [],
   "main": "./index.js",
@@ -30,17 +30,17 @@
   "licenses": [
     {
       "type": "Apache License 2.0",
-      "url": "https://github.com/signalfx/swagger-client-generator/blob/master/LICENSE-APACHE2"
+      "url": "https://github.com/mauron85/swagger-client-generator/blob/master/LICENSE-APACHE2"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/signalfx/swagger-client-generator.git"
+    "url": "git://github.com/mauron85/swagger-client-generator.git"
   },
   "bugs": {
-    "url": "https://github.com/signalfx/swagger-client-generator/issues"
+    "url": "https://github.com/mauron85/swagger-client-generator/issues"
   },
-  "homepage": "https://github.com/signalfx/swagger-client-generator",
+  "homepage": "https://github.com/mauron85/swagger-client-generator",
   "dependencies": {
     "swagger-validate": "^0.1.1"
   }

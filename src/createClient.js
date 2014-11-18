@@ -2,7 +2,8 @@
 
 var createOperationHandler = require('./createOperationHandler');
 
-function createClient(schema, requestHandler){
+function createClient(schema, requestHandler, options){
+  options = options || {};
   var api = {},
     apiAuthData,
     authMethodName = 'auth';
@@ -26,6 +27,10 @@ function createClient(schema, requestHandler){
   api[authMethodName] = function(){
     apiAuthData = processApiAuthArgs(arguments);
   };
+
+  api.url = function (url){
+    options.basePath = url;
+  }
 
   schema.apis.forEach(function(resourceObject){
     var resourceName,
@@ -62,7 +67,7 @@ function createClient(schema, requestHandler){
           return operationAuthData || apiObjectAuthData || resourceAuthData || apiAuthData;
         }
 
-        operationHandler = createOperationHandler(operation, getAuthData, requestHandler);
+        operationHandler = createOperationHandler(operation, getAuthData, requestHandler, options);
 
         operationHandler[authMethodName] = function(){
           operationAuthData = processApiAuthArgs(arguments);
